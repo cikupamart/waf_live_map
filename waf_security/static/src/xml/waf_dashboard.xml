@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="waf_security.Dashboard" owl="1">
+        <div class="o_waf_dashboard">
+            <div t-if="state.errorMessage" class="alert alert-warning m-3" role="alert">
+                <t t-esc="state.errorMessage"/>
+            </div>
+
+            <div t-else="" class="o_waf_dashboard_content">
+                <div class="o_waf_stat_cards">
+                    <div class="o_waf_stat_card">
+                        <div class="o_waf_stat_value"><t t-esc="state.total_today"/></div>
+                        <div class="o_waf_stat_label">Total Event Hari Ini</div>
+                    </div>
+                    <div class="o_waf_stat_card o_waf_stat_danger">
+                        <div class="o_waf_stat_value"><t t-esc="state.blocked_today"/></div>
+                        <div class="o_waf_stat_label">Diblokir Hari Ini</div>
+                    </div>
+                    <div class="o_waf_stat_card o_waf_stat_warning">
+                        <div class="o_waf_stat_value"><t t-esc="state.critical_24h"/></div>
+                        <div class="o_waf_stat_label">Critical (24 Jam)</div>
+                    </div>
+                    <div class="o_waf_stat_card o_waf_stat_dark">
+                        <div class="o_waf_stat_value"><t t-esc="state.active_bans"/></div>
+                        <div class="o_waf_stat_label">IP Ter-ban Aktif</div>
+                    </div>
+                </div>
+
+                <div class="o_waf_dashboard_actions">
+                    <button class="btn btn-primary" t-on-click="openLiveMap">
+                        <i class="fa fa-globe me-1"/> Buka Live Attack Map
+                    </button>
+                    <button class="btn btn-secondary" t-on-click="openAuditLog">
+                        <i class="fa fa-list me-1"/> Buka Audit Log Lengkap
+                    </button>
+                </div>
+
+                <div class="o_waf_threat_breakdown">
+                    <h4>Jenis Ancaman (24 Jam Terakhir)</h4>
+                    <div t-if="state.threat_breakdown.length === 0" class="text-muted">
+                        Belum ada aktivitas ancaman dalam 24 jam terakhir. Bagus!
+                    </div>
+                    <div t-foreach="state.threat_breakdown" t-as="item" t-key="item.key"
+                         class="o_waf_threat_bar_row">
+                        <div class="o_waf_threat_bar_label"><t t-esc="item.label"/></div>
+                        <div class="o_waf_threat_bar_track">
+                            <div class="o_waf_threat_bar_fill"
+                                 t-attf-style="width: {{item.pct}}%;"/>
+                        </div>
+                        <div class="o_waf_threat_bar_count"><t t-esc="item.count"/></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

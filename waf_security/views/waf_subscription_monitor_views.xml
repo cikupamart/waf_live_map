@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waf_subscription_log_tree" model="ir.ui.view">
+        <field name="name">waf.subscription.log.tree</field>
+        <field name="model">waf.subscription.log</field>
+        <field name="arch" type="xml">
+            <tree string="Log Subscription Monitor" create="false" edit="false"
+                  decoration-danger="state=='error'" decoration-success="state=='success'">
+                <field name="create_date" string="Waktu"/>
+                <field name="state" widget="badge"/>
+                <field name="http_status"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waf_subscription_log_form" model="ir.ui.view">
+        <field name="name">waf.subscription.log.form</field>
+        <field name="model">waf.subscription.log</field>
+        <field name="arch" type="xml">
+            <form string="Detail Log Sync" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="create_date"/>
+                        <field name="state"/>
+                        <field name="http_status"/>
+                    </group>
+                    <group string="Payload Terkirim">
+                        <field name="payload" nolabel="1"/>
+                    </group>
+                    <group string="Response Server">
+                        <field name="response" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_waf_subscription_log" model="ir.actions.act_window">
+        <field name="name">Log Subscription Monitor</field>
+        <field name="res_model">waf.subscription.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

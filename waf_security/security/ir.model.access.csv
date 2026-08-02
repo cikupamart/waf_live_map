@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_waf_config_manager,waf.config.manager,model_waf_config,group_waf_manager,1,1,1,1
+access_waf_config_viewer,waf.config.viewer,model_waf_config,group_waf_viewer,1,0,0,0
+access_waf_ip_rule_manager,waf.ip.rule.manager,model_waf_ip_rule,group_waf_manager,1,1,1,1
+access_waf_ip_rule_viewer,waf.ip.rule.viewer,model_waf_ip_rule,group_waf_viewer,1,0,0,0
+access_waf_file_extension_rule_manager,waf.file.extension.rule.manager,model_waf_file_extension_rule,group_waf_manager,1,1,1,1
+access_waf_file_extension_rule_viewer,waf.file.extension.rule.viewer,model_waf_file_extension_rule,group_waf_viewer,1,0,0,0
+access_waf_log_manager,waf.log.manager,model_waf_log,group_waf_manager,1,1,1,1
+access_waf_log_viewer,waf.log.viewer,model_waf_log,group_waf_viewer,1,0,0,0
+access_waf_subscription_log_manager,waf.subscription.log.manager,model_waf_subscription_log,group_waf_manager,1,1,1,1
+access_waf_subscription_log_viewer,waf.subscription.log.viewer,model_waf_subscription_log,group_waf_viewer,1,0,0,0

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waf_config_form" model="ir.ui.view">
+        <field name="name">waf.config.form</field>
+        <field name="model">waf.config</field>
+        <field name="arch" type="xml">
+            <form string="Konfigurasi WAF">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="active"/>
+                        <field name="block_mode"/>
+                    </group>
+                    <notebook>
+                        <page string="Deteksi Ancaman">
+                            <group>
+                                <group string="Kategori Deteksi">
+                                    <field name="enable_sql_injection_detection"/>
+                                    <field name="enable_xss_detection"/>
+                                    <field name="enable_rce_detection"/>
+                                    <field name="enable_path_traversal_detection"/>
+                                </group>
+                                <group string="Path Dikecualikan">
+                                    <field name="excluded_paths" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Rate Limiting &amp; Brute Force">
+                            <group>
+                                <group string="Rate Limiting">
+                                    <field name="enable_rate_limiting"/>
+                                    <field name="rate_limit_requests"
+                                           attrs="{'invisible': [('enable_rate_limiting','=',False)]}"/>
+                                    <field name="rate_limit_window"
+                                           attrs="{'invisible': [('enable_rate_limiting','=',False)]}"/>
+                                </group>
+                                <group string="Brute Force Login">
+                                    <field name="enable_brute_force_protection"/>
+                                    <field name="brute_force_max_attempts"
+                                           attrs="{'invisible': [('enable_brute_force_protection','=',False)]}"/>
+                                    <field name="brute_force_window"
+                                           attrs="{'invisible': [('enable_brute_force_protection','=',False)]}"/>
+                                </group>
+                            </group>
+                            <group string="Auto Ban">
+                                <field name="auto_ban_enabled"/>
+                                <field name="auto_ban_threshold"
+                                       attrs="{'invisible': [('auto_ban_enabled','=',False)]}"/>
+                                <field name="auto_ban_duration_hours"
+                                       attrs="{'invisible': [('auto_ban_enabled','=',False)]}"/>
+                            </group>
+                        </page>
+                        <page string="Security Headers">
+                            <group>
+                                <field name="enable_security_headers"/>
+                                <field name="enable_hsts"/>
+                                <field name="enable_csp"/>
+                                <field name="csp_policy" attrs="{'invisible': [('enable_csp','=',False)]}"/>
+                                <field name="enable_x_frame_options"/>
+                                <field name="x_frame_options_value"
+                                       attrs="{'invisible': [('enable_x_frame_options','=',False)]}"/>
+                            </group>
+                        </page>
+                        <page string="Alerting &amp; Log">
+                            <group>
+                                <group string="Email Alert">
+                                    <field name="enable_email_alert"/>
+                                    <field name="alert_email_to"
+                                           attrs="{'invisible': [('enable_email_alert','=',False)]}"/>
+                                </group>
+                                <group string="Telegram Alert">
+                                    <field name="enable_telegram_alert"/>
+                                    <field name="telegram_bot_token"
+                                           attrs="{'invisible': [('enable_telegram_alert','=',False)]}"/>
+                                    <field name="telegram_chat_id"
+                                           attrs="{'invisible': [('enable_telegram_alert','=',False)]}"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="alert_min_severity"/>
+                                <field name="log_retention_days"/>
+                            </group>
+                        </page>
+                        <page string="GeoIP &amp; File Extension">
+                            <group string="Filter Ekstensi File">
+                                <field name="enable_file_extension_filtering"/>
+                                <field name="file_extension_mode"
+                                       attrs="{'invisible': [('enable_file_extension_filtering','=',False)]}"/>
+                            </group>
+                            <div class="text-muted mb16">
+                                Kelola daftar ekstensi di menu
+                                <strong>WAF Security &gt; File Extension Rule</strong>.
+                            </div>
+                            <group string="GeoIP Lookup (Live Attack Map)">
+                                <field name="enable_geoip_lookup"/>
+                            </group>
+                            <div class="alert alert-info" role="alert"
+                                 attrs="{'invisible': [('enable_geoip_lookup','=',False)]}">
+                                Setiap IP yang terdeteksi WAF akan dikirim ke layanan
+                                eksternal ip-api.com untuk diterjemahkan menjadi lokasi
+                                geografis (negara/kota/koordinat). Proses berjalan
+                                async lewat cron setiap 2 menit, tidak memperlambat
+                                request yang sedang berlangsung.
+                            </div>
+                        </page>
+                        <page string="Subscription Monitor">
+                            <div class="alert alert-info" role="alert">
+                                Mengirim ringkasan status instance ini (versi, jumlah user,
+                                tanggal kadaluarsa) secara berkala ke dashboard eksternal.
+                                URL &amp; API Key di bawah sudah terisi otomatis untuk dashboard
+                                <strong>api.odoo.my.id</strong> - bisa diganti jika ingin
+                                mengirim ke dashboard lain. Sinkronisasi baru berjalan
+                                setelah toggle "Aktifkan" di bawah dinyalakan.
+                            </div>
+                            <group>
+                                <field name="subscription_monitor_enabled"/>
+                                <field name="subscription_monitor_api_url"
+                                       attrs="{'invisible': [('subscription_monitor_enabled','=',False)]}"/>
+                                <field name="subscription_monitor_api_key"
+                                       password="True"
+                                       attrs="{'invisible': [('subscription_monitor_enabled','=',False)]}"/>
+                                <field name="subscription_monitor_manual_expiration_date"
+                                       attrs="{'invisible': [('subscription_monitor_enabled','=',False)]}"/>
+                                <field name="subscription_monitor_include_user_list"
+                                       attrs="{'invisible': [('subscription_monitor_enabled','=',False)]}"/>
+                                <field name="subscription_monitor_instance_uuid" readonly="1"/>
+                            </group>
+                            <button name="action_subscription_monitor_sync_now" type="object"
+                                    string="Test &amp; Sync Sekarang" class="btn-secondary"
+                                    attrs="{'invisible': [('subscription_monitor_enabled','=',False)]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waf_config_list" model="ir.ui.view">
+        <field name="name">waf.config.list</field>
+        <field name="model">waf.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="active"/>
+                <field name="block_mode"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_waf_config" model="ir.actions.act_window">
+        <field name="name">Konfigurasi WAF</field>
+        <field name="res_model">waf.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

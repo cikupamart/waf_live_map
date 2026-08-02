@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waf_ip_rule_list" model="ir.ui.view">
+        <field name="name">waf.ip.rule.list</field>
+        <field name="model">waf.ip.rule</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="rule_type=='blacklist'" decoration-success="rule_type=='whitelist'">
+                <field name="ip_address"/>
+                <field name="rule_type" widget="badge"/>
+                <field name="reason"/>
+                <field name="is_auto"/>
+                <field name="violation_count"/>
+                <field name="expire_date"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waf_ip_rule_form" model="ir.ui.view">
+        <field name="name">waf.ip.rule.form</field>
+        <field name="model">waf.ip.rule</field>
+        <field name="arch" type="xml">
+            <form string="IP Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="ip_address"/>
+                            <field name="rule_type"/>
+                            <field name="reason"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="is_auto" readonly="1"/>
+                            <field name="violation_count" readonly="1"/>
+                            <field name="last_violation_date" readonly="1"/>
+                            <field name="expire_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waf_ip_rule_search" model="ir.ui.view">
+        <field name="name">waf.ip.rule.search</field>
+        <field name="model">waf.ip.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ip_address"/>
+                <filter string="Blacklist" name="filter_blacklist" domain="[('rule_type','=','blacklist')]"/>
+                <filter string="Whitelist" name="filter_whitelist" domain="[('rule_type','=','whitelist')]"/>
+                <filter string="Auto-ban" name="filter_auto" domain="[('is_auto','=',True)]"/>
+                <filter string="Aktif" name="filter_active" domain="[('active','=',True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_waf_ip_rule" model="ir.actions.act_window">
+        <field name="name">IP Whitelist / Blacklist</field>
+        <field name="res_model">waf.ip.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+    </record>
+</odoo>

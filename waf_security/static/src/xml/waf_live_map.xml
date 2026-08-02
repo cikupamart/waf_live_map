@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="waf_security.LiveAttackMap" owl="1">
+        <div class="o_waf_live_map_wrapper">
+            <div class="o_waf_live_map_header">
+                <h3>
+                    <i class="fa fa-globe me-2"/> Live Attack Map
+                </h3>
+                <div class="o_waf_live_map_status">
+                    <span t-if="state.loading">Memuat data...</span>
+                    <span t-else="">
+                        <t t-esc="state.attackCount"/> serangan (60 menit terakhir) -
+                        update terakhir: <t t-esc="state.lastUpdate"/>
+                    </span>
+                </div>
+            </div>
+
+            <div t-if="state.errorMessage" class="alert alert-warning m-2" role="alert">
+                <t t-esc="state.errorMessage"/>
+            </div>
+
+            <div t-if="!state.loading and !state.geoipEnabled and !state.errorMessage"
+                 class="alert alert-info m-2" role="alert">
+                GeoIP Lookup belum diaktifkan, jadi peta masih kosong. Aktifkan di
+                menu WAF Security &gt; Konfigurasi &gt; tab GeoIP &amp; File Extension.
+            </div>
+
+            <div class="o_waf_live_map_container" t-ref="mapContainer"/>
+
+            <div class="o_waf_live_map_legend">
+                <span class="badge" style="background-color:#dc3545;">Critical</span>
+                <span class="badge" style="background-color:#fd7e14;">High</span>
+                <span class="badge" style="background-color:#ffc107;color:#000;">Medium</span>
+                <span class="badge" style="background-color:#6c757d;">Low</span>
+            </div>
+        </div>
+    </t>
+
+</templates>

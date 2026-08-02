@@ -1,0 +1,77 @@
+.o_waf_dashboard {
+    padding: 16px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.o_waf_stat_cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.o_waf_stat_card {
+    flex: 1 1 180px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+}
+
+.o_waf_stat_value {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.o_waf_stat_label {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.o_waf_stat_danger .o_waf_stat_value { color: #dc3545; }
+.o_waf_stat_warning .o_waf_stat_value { color: #fd7e14; }
+.o_waf_stat_dark .o_waf_stat_value { color: #343a40; }
+
+.o_waf_dashboard_actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.o_waf_threat_breakdown h4 {
+    margin-bottom: 12px;
+}
+
+.o_waf_threat_bar_row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.o_waf_threat_bar_label {
+    flex: 0 0 180px;
+    font-size: 0.9em;
+}
+
+.o_waf_threat_bar_track {
+    flex: 1;
+    background: #e9ecef;
+    border-radius: 4px;
+    height: 14px;
+    overflow: hidden;
+}
+
+.o_waf_threat_bar_fill {
+    background: #dc3545;
+    height: 100%;
+}
+
+.o_waf_threat_bar_count {
+    flex: 0 0 40px;
+    text-align: right;
+    font-weight: 600;
+}

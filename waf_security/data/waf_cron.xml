@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cron_waf_cleanup_logs" model="ir.cron">
+        <field name="name">WAF: Bersihkan Log Lama</field>
+        <field name="model_id" ref="model_waf_log"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_cleanup_old_logs()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="cron_waf_subscription_sync" model="ir.cron">
+        <field name="name">WAF: Sync Subscription Monitor</field>
+        <field name="model_id" ref="model_waf_subscription_monitor"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <!-- Nonaktif secara default. Aktifkan hanya setelah Anda mengaktifkan
+             dan mengonfigurasi Subscription Monitor di Settings > WAF Security,
+             dan memahami data apa yang akan dikirim (lihat README.md). -->
+        <field name="active">False</field>
+    </record>
+
+    <record id="cron_waf_resolve_geo" model="ir.cron">
+        <field name="name">WAF: Resolve Geolocation untuk Live Attack Map</field>
+        <field name="model_id" ref="model_waf_log"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_resolve_geo()</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

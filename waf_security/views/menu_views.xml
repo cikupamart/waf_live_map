@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_waf_root" name="WAF Security" sequence="5"
+              groups="group_waf_viewer"/>
+
+    <menuitem id="menu_waf_dashboard" name="Dashboard" parent="menu_waf_root"
+              action="action_waf_dashboard_monitoring" sequence="1"/>
+
+    <menuitem id="menu_waf_dashboard_advanced" name="Statistik Lanjutan (Graph/Pivot)"
+              parent="menu_waf_root"
+              action="action_waf_dashboard" sequence="2" groups="group_waf_manager"/>
+
+    <menuitem id="menu_waf_live_map" name="Live Attack Map" parent="menu_waf_root"
+              action="action_waf_live_attack_map" sequence="3"/>
+
+    <menuitem id="menu_waf_log" name="Audit Log" parent="menu_waf_root"
+              action="action_waf_log" sequence="4"/>
+
+    <menuitem id="menu_waf_ip_rule" name="IP Whitelist/Blacklist" parent="menu_waf_root"
+              action="action_waf_ip_rule" sequence="5" groups="group_waf_manager"/>
+
+    <menuitem id="menu_waf_file_ext_rule" name="File Extension Rule" parent="menu_waf_root"
+              action="action_waf_file_extension_rule" sequence="6" groups="group_waf_manager"/>
+
+    <menuitem id="menu_waf_config" name="Konfigurasi" parent="menu_waf_root"
+              action="action_waf_config" sequence="7" groups="group_waf_manager"/>
+
+    <menuitem id="menu_waf_subscription_log" name="Subscription Monitor Log" parent="menu_waf_root"
+              action="action_waf_subscription_log" sequence="8" groups="group_waf_manager"/>
+</odoo>

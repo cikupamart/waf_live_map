@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard sederhana: graph ancaman per jenis + pivot analisis.
+         Untuk dashboard yang lebih visual (kartu statistik, chart interaktif),
+         modul ini bisa dikembangkan lebih lanjut menggunakan OWL component,
+         namun untuk tujuan belajar, graph & pivot bawaan Odoo sudah cukup
+         menggambarkan konsep monitoring. -->
+
+    <record id="view_waf_log_kanban_recent" model="ir.ui.view">
+        <field name="name">waf.log.kanban.dashboard</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_kanban_dashboard">
+                <field name="ip_address"/>
+                <field name="threat_type"/>
+                <field name="severity"/>
+                <field name="url"/>
+                <field name="action_taken"/>
+                <field name="create_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.severity.raw_value == 'critical' ? 'border-danger' : ''}">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="threat_type"/></strong>
+                                <span class="float-right badge badge-pill"
+                                      t-attf-class="badge-#{record.severity.raw_value in ['critical','high'] ? 'danger' : 'warning'}">
+                                    <field name="severity"/>
+                                </span>
+                            </div>
+                            <div>IP: <field name="ip_address"/></div>
+                            <div>URL: <field name="url"/></div>
+                            <div>Tindakan: <field name="action_taken"/></div>
+                            <div class="text-muted"><field name="create_date"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_waf_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Monitoring WAF</field>
+        <field name="res_model">waf.log</field>
+        <field name="view_mode">graph,pivot,kanban,tree</field>
+        <field name="context">{'search_default_group_threat': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada aktivitas ancaman yang tercatat. Bagus!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_waf_dashboard_kanban_view" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_waf_log_kanban_recent"/>
+        <field name="act_window_id" ref="action_waf_dashboard"/>
+    </record>
+</odoo>

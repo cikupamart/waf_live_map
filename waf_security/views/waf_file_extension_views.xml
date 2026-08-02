@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waf_file_extension_rule_list" model="ir.ui.view">
+        <field name="name">waf.file.extension.rule.list</field>
+        <field name="model">waf.file.extension.rule</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="rule_type=='block'" decoration-success="rule_type=='whitelist'">
+                <field name="extension"/>
+                <field name="rule_type" widget="badge"/>
+                <field name="reason"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waf_file_extension_rule_form" model="ir.ui.view">
+        <field name="name">waf.file.extension.rule.form</field>
+        <field name="model">waf.file.extension.rule</field>
+        <field name="arch" type="xml">
+            <form string="File Extension Rule">
+                <sheet>
+                    <group>
+                        <field name="extension" placeholder="mis. php (tanpa titik)"/>
+                        <field name="rule_type"/>
+                        <field name="reason"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waf_file_extension_rule_search" model="ir.ui.view">
+        <field name="name">waf.file.extension.rule.search</field>
+        <field name="model">waf.file.extension.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="extension"/>
+                <filter string="Block" name="filter_block" domain="[('rule_type','=','block')]"/>
+                <filter string="Whitelist" name="filter_whitelist" domain="[('rule_type','=','whitelist')]"/>
+                <filter string="Aktif" name="filter_active" domain="[('active','=',True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_waf_file_extension_rule" model="ir.actions.act_window">
+        <field name="name">File Extension Rule</field>
+        <field name="res_model">waf.file.extension.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada rule ekstensi file. Tambahkan ekstensi yang ingin
+                di-block atau di-whitelist untuk upload.
+            </p>
+        </field>
+    </record>
+</odoo>

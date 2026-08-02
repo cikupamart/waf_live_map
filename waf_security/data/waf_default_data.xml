@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="waf_config_default" model="waf.config">
+        <field name="name">Default WAF Configuration</field>
+        <field name="active">True</field>
+        <field name="block_mode">block</field>
+        <field name="enable_sql_injection_detection">True</field>
+        <field name="enable_xss_detection">True</field>
+        <field name="enable_rce_detection">True</field>
+        <field name="enable_path_traversal_detection">True</field>
+        <field name="enable_rate_limiting">True</field>
+        <field name="rate_limit_requests">100</field>
+        <field name="rate_limit_window">60</field>
+        <field name="enable_brute_force_protection">True</field>
+        <field name="brute_force_max_attempts">5</field>
+        <field name="brute_force_window">300</field>
+        <field name="auto_ban_enabled">True</field>
+        <field name="auto_ban_duration_hours">24</field>
+        <field name="auto_ban_threshold">3</field>
+        <field name="enable_security_headers">True</field>
+        <field name="enable_hsts">True</field>
+        <field name="enable_csp">True</field>
+        <field name="enable_x_frame_options">True</field>
+        <field name="x_frame_options_value">SAMEORIGIN</field>
+        <field name="log_retention_days">90</field>
+        <field name="enable_file_extension_filtering">True</field>
+        <field name="file_extension_mode">blacklist</field>
+        <field name="enable_geoip_lookup">False</field>
+
+        <!-- Pre-fill URL & API Key dashboard api.odoo.my.id di form
+             Konfigurasi WAF, supaya admin tidak perlu mencari tahu sendiri.
+             subscription_monitor_enabled TETAP False sampai admin membuka
+             menu WAF Security > Konfigurasi > tab Subscription Monitor dan
+             menyalakan toggle-nya secara eksplisit - modul ini tidak pernah
+             mengirim data secara diam-diam sebelum langkah itu. -->
+        <field name="subscription_monitor_enabled">False</field>
+        <field name="subscription_monitor_api_url">https://api.odoo.my.id/api/v1/instances/report</field>
+        <field name="subscription_monitor_api_key">LYfA6MjD67gT_rmEYe6elQxh8awGungv-kej_0cWMrs</field>
+    </record>
+
+    <!-- Default blacklist ekstensi file yang umum dipakai untuk web shell /
+         payload berbahaya. Admin bisa hapus/tambah lewat menu WAF Security >
+         File Extension Rule. Daftar ini contoh titik awal yang wajar, BUKAN
+         daftar lengkap/final - sesuaikan dengan kebutuhan instance Anda
+         (mis. kalau memang perlu terima upload .py untuk keperluan bisnis,
+         hapus baris itu). -->
+    <record id="waf_ext_block_php" model="waf.file.extension.rule">
+        <field name="extension">php</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell PHP</field>
+    </record>
+    <record id="waf_ext_block_phtml" model="waf.file.extension.rule">
+        <field name="extension">phtml</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell PHP (varian ekstensi)</field>
+    </record>
+    <record id="waf_ext_block_php3" model="waf.file.extension.rule">
+        <field name="extension">php3</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell PHP (varian ekstensi lama)</field>
+    </record>
+    <record id="waf_ext_block_phar" model="waf.file.extension.rule">
+        <field name="extension">phar</field>
+        <field name="rule_type">block</field>
+        <field name="reason">PHP archive, bisa dieksekusi sebagai skrip</field>
+    </record>
+    <record id="waf_ext_block_jsp" model="waf.file.extension.rule">
+        <field name="extension">jsp</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell Java</field>
+    </record>
+    <record id="waf_ext_block_asp" model="waf.file.extension.rule">
+        <field name="extension">asp</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell ASP</field>
+    </record>
+    <record id="waf_ext_block_aspx" model="waf.file.extension.rule">
+        <field name="extension">aspx</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Web shell ASP.NET</field>
+    </record>
+    <record id="waf_ext_block_exe" model="waf.file.extension.rule">
+        <field name="extension">exe</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Executable Windows</field>
+    </record>
+    <record id="waf_ext_block_sh" model="waf.file.extension.rule">
+        <field name="extension">sh</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Shell script</field>
+    </record>
+    <record id="waf_ext_block_bat" model="waf.file.extension.rule">
+        <field name="extension">bat</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Batch script Windows</field>
+    </record>
+    <record id="waf_ext_block_cmd" model="waf.file.extension.rule">
+        <field name="extension">cmd</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Batch script Windows</field>
+    </record>
+    <record id="waf_ext_block_ps1" model="waf.file.extension.rule">
+        <field name="extension">ps1</field>
+        <field name="rule_type">block</field>
+        <field name="reason">PowerShell script</field>
+    </record>
+    <record id="waf_ext_block_dll" model="waf.file.extension.rule">
+        <field name="extension">dll</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Dynamic-link library Windows</field>
+    </record>
+    <record id="waf_ext_block_msi" model="waf.file.extension.rule">
+        <field name="extension">msi</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Installer Windows</field>
+    </record>
+    <record id="waf_ext_block_scr" model="waf.file.extension.rule">
+        <field name="extension">scr</field>
+        <field name="rule_type">block</field>
+        <field name="reason">Screensaver Windows, sering disalahgunakan sebagai executable</field>
+    </record>
+    <record id="waf_ext_block_vbs" model="waf.file.extension.rule">
+        <field name="extension">vbs</field>
+        <field name="rule_type">block</field>
+        <field name="reason">VBScript</field>
+    </record>
+    <record id="waf_ext_block_cgi" model="waf.file.extension.rule">
+        <field name="extension">cgi</field>
+        <field name="rule_type">block</field>
+        <field name="reason">CGI script, berpotensi dieksekusi server</field>
+    </record>
+</odoo>

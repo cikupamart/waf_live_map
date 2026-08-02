@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waf_log_list" model="ir.ui.view">
+        <field name="name">waf.log.list</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <tree string="Audit Log WAF" decoration-danger="severity=='critical'"
+                  decoration-warning="severity=='high'" create="false" edit="false">
+                <field name="create_date" string="Waktu"/>
+                <field name="ip_address"/>
+                <field name="threat_type"/>
+                <field name="severity" widget="badge"
+                       decoration-danger="severity in ('critical','high')"
+                       decoration-warning="severity=='medium'"/>
+                <field name="url"/>
+                <field name="method"/>
+                <field name="action_taken" widget="badge"
+                       decoration-danger="action_taken=='blocked'"
+                       decoration-success="action_taken=='banned'"/>
+                <field name="source_field"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waf_log_form" model="ir.ui.view">
+        <field name="name">waf.log.form</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <form string="Detail Log WAF" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="ip_address"/>
+                            <field name="user_id"/>
+                            <field name="url"/>
+                            <field name="method"/>
+                        </group>
+                        <group>
+                            <field name="threat_type"/>
+                            <field name="severity"/>
+                            <field name="action_taken"/>
+                            <field name="source_field"/>
+                            <field name="user_agent"/>
+                        </group>
+                    </group>
+                    <group string="Detail Payload">
+                        <field name="matched_pattern"/>
+                        <field name="matched_payload"/>
+                        <field name="request_snippet"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waf_log_search" model="ir.ui.view">
+        <field name="name">waf.log.search</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <search string="Cari Log WAF">
+                <field name="ip_address"/>
+                <field name="url"/>
+                <field name="threat_type"/>
+                <filter string="Critical" name="filter_critical" domain="[('severity','=','critical')]"/>
+                <filter string="High" name="filter_high" domain="[('severity','=','high')]"/>
+                <filter string="Diblokir" name="filter_blocked" domain="[('action_taken','=','blocked')]"/>
+                <filter string="Hari Ini" name="filter_today"
+                        domain="[('create_date','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <group expand="0" string="Kelompokkan">
+                    <filter string="Jenis Ancaman" name="group_threat" context="{'group_by':'threat_type'}"/>
+                    <filter string="Severity" name="group_severity" context="{'group_by':'severity'}"/>
+                    <filter string="Alamat IP" name="group_ip" context="{'group_by':'ip_address'}"/>
+                    <filter string="Tindakan" name="group_action" context="{'group_by':'action_taken'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_waf_log_graph" model="ir.ui.view">
+        <field name="name">waf.log.graph</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <graph string="Statistik Ancaman WAF" type="bar">
+                <field name="threat_type"/>
+                <field name="id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_waf_log_pivot" model="ir.ui.view">
+        <field name="name">waf.log.pivot</field>
+        <field name="model">waf.log</field>
+        <field name="arch" type="xml">
+            <pivot string="Analisis WAF">
+                <field name="threat_type" type="row"/>
+                <field name="severity" type="col"/>
+                <field name="id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_waf_log" model="ir.actions.act_window">
+        <field name="name">Audit Log WAF</field>
+        <field name="res_model">waf.log</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="context">{'search_default_filter_today': 0}</field>
+    </record>
+</odoo>
